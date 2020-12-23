@@ -6,4 +6,12 @@ body {
 a {
     text-decoration: none;
     color: black;
+    cursor: pointer;
+}
+
+/* '*' universal selector for every element box-sizing is border-box not 
+    affected by padding,margin,border .
+    box-sizing property allows us to include the padding and border in an element's total width and height*/
+* {
+    box-sizing: border-box;
 }

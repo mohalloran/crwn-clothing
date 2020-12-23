@@ -4,14 +4,16 @@ import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
+import { signInWithGoogle } from '../../firebase/firebase.utils';
+
 class SignIn extends Component {
 
     constructor(){
         super();
 
         this.state = {
-            email: '',
-            password: ''
+            email: 'walt200065@gmail.com',
+            password: 'Frank#991'
         }
     }
 
@@ -49,10 +51,16 @@ class SignIn extends Component {
                          label='password'
                     />
                    
-                   <br/>
-                   <CustomButton type='submit'>
-                        Sign in
-                   </CustomButton>
+                   
+                   <div className='button'>
+                        <CustomButton type='submit'>
+                                Sign in
+                        </CustomButton>
+                        <span>{'     '}</span>
+                        <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+                                {' '} Sign in with Google {' '}
+                        </CustomButton>
+                   </div>
 
                </form>
            </div>

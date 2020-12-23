@@ -14,6 +14,18 @@
   border: none;
   cursor: pointer;
 
+  // & says .custom-button.google-sign-in  
+  &.google-sign-in {
+    background-color:#4285f4;  //google blue
+    color: white;
+
+    &:hover {
+        background-color: #357ae8;
+        border: none;
+
+    }
+}
+
   &:hover {
     background-color: white;
     color: black;
