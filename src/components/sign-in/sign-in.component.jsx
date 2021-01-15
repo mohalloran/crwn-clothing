@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
-import { signInWithGoogle } from '../../firebase/firebase.utils';
+import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 
 import './sign-in.styles.scss';
 
@@ -18,9 +18,20 @@ class SignIn extends Component {
         }
     }
 
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
-        this.setState({email:'',password:''})
+
+        const {email, password} = this.state;
+
+        try {
+
+            await auth.signInWithEmailAndPassword(email, password);
+            this.setState({email:'',password:''});
+
+        }catch(error){
+            console.log(error);
+        }
+
     }
 
     handleChange = (event) => {
@@ -31,37 +42,40 @@ class SignIn extends Component {
     render(){
         return (
            <div className='sign-in'>
+             
                <h2>I already have an account</h2>
                <span className='title'>Sign in with your email and password</span>
 
-               <form onSubmit={this.handleSubmit}>
-                   <FormInput 
-                       name='email' 
-                       type='email' 
-                       value={this.state.email} 
-                       required onChange={this.handleChange}
-                       label="emaill"
-                    />
-                   
-                   <FormInput
-                         name='password' 
-                         type='password' 
-                         value={this.state.password} 
-                         required onChange={this.handleChange}
-                         label='password'
-                    />
-                   
-                   
-                   <div className='button'>
-                        <CustomButton type='submit'>
-                                Sign in
-                        </CustomButton>
-                        <span>{'     '}</span>
-                        <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
-                                {' '} Sign in with Google {' '}
-                        </CustomButton>
-                   </div>
+               <form onSubmit={this.handleSubmit} >
 
+                        <FormInput 
+                            name='email' 
+                            type='email' 
+                            value={this.state.email} 
+                            required onChange={this.handleChange}
+                            label="email"
+                            />
+                        
+                        <FormInput
+                                name='password' 
+                                type='password' 
+                                value={this.state.password} 
+                                required onChange={this.handleChange}
+                                label='password'
+                        />
+
+                    <div className='button-container'>
+                        <div className='button'>
+                                <CustomButton type='submit'>
+                                        Sign in
+                                </CustomButton>
+                                <span>{'     '}</span>
+                                <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+                                        {' '} Sign in with Google {' '}
+                                </CustomButton>
+                        </div>
+                   </div>
+                
                </form>
            </div>
         )

@@ -2,15 +2,26 @@
     width: 380px;
     display:flex;
     flex-direction: column;
-
+    height: 556px;
+  
     .title {
         margin: 10px 0
+        
     }
 
-    .button {
+    .button-container {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+        flex-direction: column;
+        height:200;
+        align-self: flex-end;
+        
+
+        .button {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+    }       
     
 }
