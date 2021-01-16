@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-signu-up.component';
@@ -44,7 +44,7 @@ class App extends Component {
         });
         
        }//end if
-       
+
        setCurrentUser(userAuth)//Setting it to null .
     
      });
@@ -62,7 +62,14 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/shop" component={ShopPage} />
-            <Route path='/signin' component={SignInAndSignUp} />
+            <Route 
+                exact path='/signin'
+                render = { () => (
+                  this.props.currentUser ? 
+                     (<Redirect to='/' />) :  (<SignInAndSignUp />)
+                )}
+
+                />
           </Switch>
           
 
@@ -72,11 +79,18 @@ class App extends Component {
   }
 }
 
+//state is our root reducer state .
+const mapStateToProps = ({user}) => {
+    return {
+        currentUser: user.currentUser
+    }
+}
+
 //dispatch is a redux function that passes the returned value
 //from setCurrentUser(user) action to our reducers.mapDispatchToProps makes
 //the prop setCurrentUser available as a prop.
 const mapDispatchToProps = (dispatch) => ({
     setCurrentUser: (user) => dispatch(setCurrentUser(user))
-})
+});
 
-export default connect(null, mapDispatchToProps )(App);
+export default connect(mapStateToProps, mapDispatchToProps )(App);
