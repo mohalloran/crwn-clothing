@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-signu-up.component';
 import Header from './components/header/header-component';
@@ -8,19 +9,15 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
+import { setCurrentUser } from './redux/user/user.actions';
+
 class App extends Component {
-
-  constructor(){
-    super();
-
-    this.state = {
-      currentUser: null
-    }
-  }
 
   unsubscribeFromAuth = null;
 
   componentDidMount(){
+
+    const { setCurrentUser } = this.props; 
 
      //register observer to users login state .when user logins we save the 
      //user to the firestore DB if it is a new user .We massage the data we
@@ -36,20 +33,19 @@ class App extends Component {
         console.log('USER DATA IS:',userData.data());
         //allows us to listen if the document (data) exists or any changes to the document
         userRef.onSnapshot( (snapShot) => {
-          console.log('SnapShot Data is ',snapShot.data());
-          this.setState({ 
-            currentUser: {
-                id: snapShot.id,
-                ...snapShot.data()
+          
+          setCurrentUser(
+            {
+              id: snapShot.id,
+              ...snapShot.data()
             }
-          }, () => {
-            console.log('State in App is:',this.state);
-          });
+          )
 
         });
         
-       }
-       this.setState({currentUser: userAuth})//Setting it to null .
+       }//end if
+       
+       setCurrentUser(userAuth)//Setting it to null .
     
      });
   }
@@ -62,7 +58,7 @@ class App extends Component {
   render(){
       return (
         <div>
-          <Header  currentUser={this.state.currentUser}/>
+          <Header />
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/shop" component={ShopPage} />
@@ -76,4 +72,11 @@ class App extends Component {
   }
 }
 
-export default App;
+//dispatch is a redux function that passes the returned value
+//from setCurrentUser(user) action to our reducers.mapDispatchToProps makes
+//the prop setCurrentUser available as a prop.
+const mapDispatchToProps = (dispatch) => ({
+    setCurrentUser: (user) => dispatch(setCurrentUser(user))
+})
+
+export default connect(null, mapDispatchToProps )(App);

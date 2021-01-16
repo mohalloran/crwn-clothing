@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase.utils';
+import { connect } from 'react-redux';
 
 //SVGR under the hood to make it possible to transform and import SVG as a React component.
 import {ReactComponent as Logo} from '../../assets/crown.svg';
 
 import './header.styles.scss';
 
+//currentUser destructured this.props.currentUser
 const Header = ({currentUser}) => (
     <div className='header'>
       <Link to='/' className='logoContainer'>
@@ -34,5 +36,17 @@ const Header = ({currentUser}) => (
     </div>
 )
 
+//connect is a higher order component
+//higher order components are functions that accept 
+//functions and return a suped up component
+//state is the root reducer
+//mapStateToProps makes currentUser available as a prop
+//Anytime the store changes mapStateToProps is called .
+const mapStateToProps = (state) => {
 
-export default Header;
+  return {
+     currentUser: state.user.currentUser
+  }
+}
+
+export default connect(mapStateToProps,null)(Header);
