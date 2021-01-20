@@ -23,7 +23,7 @@ class App extends Component {
      //user to the firestore DB if it is a new user .We massage the data we
      //return and save it in State .
      this.unsubscribeFromAuth = auth.onAuthStateChanged( async (userAuth) => {
-              
+       console.log('CHECKING IF USER IS THERE...',userAuth);      
        if(userAuth){
         console.log('userAuth is:',userAuth);
         //Save the user in the Firebase database if they don't exist.
@@ -71,8 +71,6 @@ class App extends Component {
 
                 />
           </Switch>
-          
-
         </div>
         
       );

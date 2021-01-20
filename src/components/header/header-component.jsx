@@ -5,11 +5,14 @@ import { connect } from 'react-redux';
 
 //SVGR under the hood to make it possible to transform and import SVG as a React component.
 import {ReactComponent as Logo} from '../../assets/crown.svg';
+import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropDown from '../cart-dropdown/cart-dropdown.component';
 
 import './header.styles.scss';
 
+
 //currentUser destructured this.props.currentUser
-const Header = ({currentUser}) => (
+const Header = ({currentUser, hidden}) => (
     <div className='header'>
       <Link to='/' className='logoContainer'>
         <Logo className='logo'/>
@@ -31,7 +34,14 @@ const Header = ({currentUser}) => (
             </Link>
             
         }
+
+        <CartIcon />
+        
+
       </div>
+
+      {hidden ? null : <CartDropDown /> }
+      
 
     </div>
 )
@@ -42,10 +52,11 @@ const Header = ({currentUser}) => (
 //state is the root reducer
 //mapStateToProps makes currentUser available as a prop
 //Anytime the store changes mapStateToProps is called .
-const mapStateToProps = (state) => {
+const mapStateToProps = ({user:{ currentUser }, cart:{ hidden }}) => {
 
   return {
-     currentUser: state.user.currentUser
+     currentUser: currentUser,
+     hidden: hidden
   }
 }
 
