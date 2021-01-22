@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CustomButton from '../custom-button/custom-button.component';
 import CartItem from '../cart-item/cart-item.component';
+import { selectCartItems } from '../../redux/cart/cart.selectors';
 
 import './cart-dropdown.styles.scss';
 
@@ -21,10 +22,12 @@ const CartDropDown = ({ cartItems }) => {
     );
 }
 
-const mapDispatchToProps = ({cart:{cartItems}}) => {
+//improve performance by implementing memozization with selectors 
+//we are not changing the props when there is a State change
+const mapDispatchToProps = (state) => {
 
     return {
-        cartItems :cartItems
+        cartItems : selectCartItems(state)
     }
 }
 
