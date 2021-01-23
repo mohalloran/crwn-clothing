@@ -2,12 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase.utils';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 //SVGR under the hood to make it possible to transform and import SVG as a React component.
 import {ReactComponent as Logo} from '../../assets/crown.svg';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropDown from '../cart-dropdown/cart-dropdown.component';
-
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
 import './header.styles.scss';
 
 
@@ -52,12 +54,12 @@ const Header = ({currentUser, hidden}) => (
 //state is the root reducer
 //mapStateToProps makes currentUser available as a prop
 //Anytime the store changes mapStateToProps is called .
-const mapStateToProps = ({user:{ currentUser }, cart:{ hidden }}) => {
+//createStructuredSelector from reselect will call the necessary selectors with state.
+const mapStateToProps = createStructuredSelector( {
 
-  return {
-     currentUser: currentUser,
-     hidden: hidden
-  }
-}
+     currentUser: selectCurrentUser,
+     hidden: selectCartHidden
+  
+})
 
 export default connect(mapStateToProps,null)(Header);

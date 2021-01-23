@@ -7,9 +7,11 @@ import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-signu-up.co
 import Header from './components/header/header-component';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
+import CheckOutPage from './pages/checkout/checkout.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 import { setCurrentUser } from './redux/user/user.actions';
+import { selectCurrentUser } from './redux/user/user.selectors';
 
 class App extends Component {
 
@@ -69,7 +71,8 @@ class App extends Component {
                      (<Redirect to='/' />) :  (<SignInAndSignUp />)
                 )}
 
-                />
+            />
+            <Route exact path='/checkout' component={CheckOutPage} />
           </Switch>
         </div>
         
@@ -78,9 +81,9 @@ class App extends Component {
 }
 
 //state is our root reducer state .
-const mapStateToProps = ({user}) => {
+const mapStateToProps = (state) => {
     return {
-        currentUser: user.currentUser
+        currentUser: selectCurrentUser
     }
 }
 
