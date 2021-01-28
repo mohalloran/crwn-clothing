@@ -58,6 +58,11 @@ class App extends Component {
   }
 
   render(){
+      console.log('Current USER is:',this.props.currentUser);
+      if(this.props.currentUser === null){
+        console.log('Current User is Undefined');
+      }
+
       return (
         <div>
           <Header />
@@ -83,7 +88,7 @@ class App extends Component {
 //state is our root reducer state .
 const mapStateToProps = (state) => {
     return {
-        currentUser: selectCurrentUser
+        currentUser: state.user.selectCurrentUser || undefined
     }
 }
 
