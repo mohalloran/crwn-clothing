@@ -1,39 +1,31 @@
-import React, {Component} from 'react';
-import SHOP_DATA from './shop.data.js';
-import CollectionPreview from '../../components/preview-collection/collection-preview.component'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
+import {selectShopItems} from '../../redux/shop/shop.selector'
+import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
+import CollectionPage from '../collection/collection.component';
 
-class ShopPage extends Component {
+//match ,location, history available to us
+const ShopPage = ({ match }) => {
+    console.log('Match Path is:',match.path);
 
-    constructor(props){
-        super(props);
+    //Match /shop/param   param is the collectionId
+    //<Route path={`${match.path}/:collectionId`} component={ CollectionPage } />
 
-        
-        this.state = {
-            collections: SHOP_DATA
-            
-        }
-    }
-
-    render() {
-
-        const {collections} = this.state;
-
-        console.log('Title is ',collections[0].title)
-        console.log('items are ',collections[0].items)
-        return (
+    return (
             <div className='shop-page'>
-                {
-                    collections.map( ({id, ...otherCollectionProps}) => (
-                        <CollectionPreview key={id} {...otherCollectionProps} />
-                    ))
-                    // collections.map( (collection) => (
-                    //     <CollectionPreview title={collection.title} items={collection.items} />
-                    // ))
-                }
-               
+                <Route exact path={`${match.path}`} component={ CollectionsOverview } />
+                <Route path={`${match.path}/:collectionId`} component={ CollectionPage } />
             </div>
-        )
-    }
+    )
+    
 }
 
-export default ShopPage;
+const mapStateToProps = (state) => {
+   return {
+       collections: selectShopItems(state),
+       
+   }
+}
+
+export default connect(mapStateToProps,null)(ShopPage);

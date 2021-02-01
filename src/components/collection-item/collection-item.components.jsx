@@ -9,7 +9,7 @@ import './collection-item.styles.scss';
 const CollectionItem = ({item, addItem }) => {
 
     const { name, price, imageUrl} = item;
-    console.log('Name is',item);
+    
     return (
         <div className='collection-item'>
 
@@ -27,11 +27,5 @@ const CollectionItem = ({item, addItem }) => {
         </div>
     )
 }
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         addItem: (item) => dispatch(addItem(item))
-//     }
-// }
 
 export default connect(null,{addItem})(CollectionItem);
